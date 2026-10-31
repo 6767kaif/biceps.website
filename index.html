@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BICEPS Esports | Команда, Статистика и История Игр</title>
+    <title>BICEPS Esports | Команда и Статистика</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -36,10 +36,12 @@
             background-color: #0A0A0C;
             color: #E2E8F0;
             font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
         }
         .heading-font {
             font-family: 'Rajdhani', sans-serif;
         }
+        /* Custom Glowing Effect */
         .red-glow {
             box-shadow: 0 0 25px rgba(229, 9, 20, 0.25);
         }
@@ -49,6 +51,7 @@
         .text-glow {
             text-shadow: 0 0 12px rgba(229, 9, 20, 0.6);
         }
+        /* Smooth Fade Transitions */
         .tab-content {
             display: none;
             opacity: 0;
@@ -58,7 +61,23 @@
             display: block;
             opacity: 1;
         }
-        /* Custom scrollbar for player modal game story */
+        /* Welcome Screen Animations */
+        #welcome-screen {
+            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
+        }
+        #welcome-screen.hidden-welcome {
+            opacity: 0;
+            transform: scale(1.05);
+            visibility: hidden;
+            pointer-events: none;
+        }
+        #main-app {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        #main-app.visible-app {
+            opacity: 1;
+        }
         .custom-scroll::-webkit-scrollbar {
             width: 6px;
         }
@@ -76,195 +95,287 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-brand-red selection:text-white">
 
-    <!-- Header Navigation -->
-    <header class="sticky top-0 z-50 bg-brand-black/90 backdrop-blur-md border-b border-brand-border">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <!-- Logo -->
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
-                    <div class="w-10 h-10 bg-brand-red rounded-lg flex items-center justify-center text-white font-bold text-xl heading-font tracking-wider shadow-lg shadow-brand-red/30">
-                        B
-                    </div>
-                    <span class="text-2xl font-bold tracking-wider text-white heading-font uppercase">
-                        BICEPS <span class="text-brand-red">ESPORTS</span>
-                    </span>
-                </div>
-
-                <!-- Desktop Nav Tabs -->
-                <nav class="hidden md:flex space-x-1 bg-brand-card p-1.5 rounded-xl border border-brand-border">
-                    <button id="tab-btn-home" onclick="switchTab('home')" class="nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-white bg-brand-red shadow-md">
-                        <i class="fa-solid fa-house mr-2"></i>Главная
-                    </button>
-                    <button id="tab-btn-roster" onclick="switchTab('roster')" class="nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-gray-400 hover:text-white hover:bg-brand-border/50">
-                        <i class="fa-solid fa-users mr-2"></i>Состав
-                    </button>
-                    <button id="tab-btn-stats" onclick="switchTab('stats')" class="nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-gray-400 hover:text-white hover:bg-brand-border/50">
-                        <i class="fa-solid fa-chart-line mr-2"></i>Статистика
-                    </button>
-                </nav>
-
-                <!-- Mobile Navigation Toggle Button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-gray-400 hover:text-white focus:outline-none p-2 rounded-lg bg-brand-card border border-brand-border">
-                        <i class="fa-solid fa-bars text-xl"></i>
-                    </button>
-                </div>
+    <!-- WELCOME SCREEN OVERLAY -->
+    <div id="welcome-screen" class="fixed inset-0 z-50 bg-brand-black flex flex-col items-center justify-center p-6 text-center">
+        <div class="absolute inset-0 bg-radial from-brand-red/10 via-transparent to-transparent pointer-events-none"></div>
+        <div class="max-w-xl space-y-8 relative z-10">
+            <div class="w-24 h-24 bg-brand-red rounded-3xl mx-auto flex items-center justify-center text-white font-bold text-5xl heading-font tracking-wider shadow-2xl shadow-brand-red/50 red-glow animate-bounce">
+                B
+            </div>
+            <div class="space-y-3">
+                <h1 class="text-4xl md:text-6xl font-bold heading-font uppercase text-white tracking-wide">
+                    BICEPS <span class="text-brand-red text-glow">ESPORTS</span>
+                </h1>
+                <p class="text-gray-400 text-sm md:text-base max-w-md mx-auto">
+                    Добро пожаловать в официальный хаб организации. Статистика, состав и истории игроков киберспортивной команды.
+                </p>
+            </div>
+            <!-- Social Medias Welcome Screen -->
+            <div class="flex items-center justify-center space-x-6 text-2xl text-gray-400">
+                <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red transition-colors" title="Discord">
+                    <i class="fa-brands fa-discord"></i>
+                </a>
+                <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red transition-colors" title="Telegram">
+                    <i class="fa-brands fa-telegram"></i>
+                </a>
+                <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red transition-colors" title="TikTok">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+            </div>
+            <div>
+                <button onclick="enterApp()" class="px-10 py-4 rounded-xl font-bold bg-brand-red hover:bg-red-700 text-white transition-all duration-300 shadow-xl shadow-brand-red/40 red-glow text-lg uppercase tracking-wider flex items-center justify-center mx-auto group">
+                    Войти на сайт <i class="fa-solid fa-right-to-bracket ml-3 group-hover:translate-x-1 transition-transform"></i>
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-brand-card border-b border-brand-border px-4 pt-2 pb-4 space-y-2">
-            <button onclick="switchTab('home'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-white bg-brand-red/20 border border-brand-red/40 flex items-center">
-                <i class="fa-solid fa-house w-6 text-brand-red"></i>Главная
-            </button>
-            <button onclick="switchTab('roster'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-brand-border flex items-center">
-                <i class="fa-solid fa-users w-6 text-brand-red"></i>Состав
-            </button>
-            <button onclick="switchTab('stats'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-brand-border flex items-center">
-                <i class="fa-solid fa-chart-line w-6 text-brand-red"></i>Статистика
-            </button>
-        </div>
-    </header>
+    <!-- MAIN APPLICATION WRAPPER -->
+    <div id="main-app" class="min-h-screen flex flex-col justify-between">
 
-    <!-- Main Content Dynamic Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+        <!-- Header Navigation -->
+        <header class="sticky top-0 z-40 bg-brand-black/90 backdrop-blur-md border-b border-brand-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <!-- Logo -->
+                    <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                        <div class="w-10 h-10 bg-brand-red rounded-lg flex items-center justify-center text-white font-bold text-xl heading-font tracking-wider shadow-lg shadow-brand-red/30">
+                            B
+                        </div>
+                        <span class="text-2xl font-bold tracking-wider text-white heading-font uppercase">
+                            BICEPS <span class="text-brand-red">ESPORTS</span>
+                        </span>
+                    </div>
 
-        <!-- TAB 1: HOME -->
-        <section id="tab-home" class="tab-content active space-y-12">
-            <!-- Hero Banner -->
-            <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-brand-card via-brand-card/90 to-brand-black border border-brand-border p-8 md:p-14 red-glow">
-                <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-brand-red/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="max-w-2xl relative z-10 space-y-6">
-                    <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-brand-red/10 text-brand-red border border-brand-red/30 tracking-widest uppercase">
-                        <span class="w-2 h-2 rounded-full bg-brand-red animate-ping mr-2"></span> Официальный сайт
-                    </span>
-                    <h1 class="text-4xl md:text-6xl font-bold heading-font tracking-tight text-white uppercase leading-none">
-                        Доминируй. <br/><span class="text-brand-red text-glow">Побеждай.</span> Создавай историю.
-                    </h1>
-                    <p class="text-gray-400 text-base md:text-lg leading-relaxed">
-                        Команда BICEPS Esports демонстрирует высочайший уровень игры, невероятную точность и командную синергию в текущем сезоне.
-                    </p>
-                    <div class="flex flex-wrap gap-4 pt-2">
-                        <button onclick="switchTab('stats')" class="px-8 py-3.5 rounded-xl font-bold bg-brand-red hover:bg-red-700 text-white transition-all duration-300 shadow-lg shadow-brand-red/30 flex items-center">
-                            Посмотреть статистику <i class="fa-solid fa-arrow-right ml-2"></i>
+                    <!-- Desktop Nav Tabs & Socials -->
+                    <div class="hidden md:flex items-center space-x-4">
+                        <nav class="flex space-x-1 bg-brand-card p-1.5 rounded-xl border border-brand-border">
+                            <button id="tab-btn-home" onclick="switchTab('home')" class="nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-white bg-brand-red shadow-md">
+                                <i class="fa-solid fa-house mr-2"></i>Главная
+                            </button>
+                            <button id="tab-btn-roster" onclick="switchTab('roster')" class="nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-gray-400 hover:text-white hover:bg-brand-border/50">
+                                <i class="fa-solid fa-users mr-2"></i>Состав
+                            </button>
+                            <button id="tab-btn-stats" onclick="switchTab('stats')" class="nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-gray-400 hover:text-white hover:bg-brand-border/50">
+                                <i class="fa-solid fa-chart-line mr-2"></i>Статистика
+                            </button>
+                        </nav>
+
+                        <!-- Header Socials -->
+                        <div class="flex items-center space-x-3 pl-2 text-gray-400 border-l border-brand-border">
+                            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-brand-card border border-brand-border hover:text-white hover:border-brand-red transition-all" title="Discord">
+                                <i class="fa-brands fa-discord"></i>
+                            </a>
+                            <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-brand-card border border-brand-border hover:text-white hover:border-brand-red transition-all" title="Telegram">
+                                <i class="fa-brands fa-telegram"></i>
+                            </a>
+                            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-brand-card border border-brand-border hover:text-white hover:border-brand-red transition-all" title="TikTok">
+                                <i class="fa-brands fa-tiktok"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Navigation Toggle Button -->
+                    <div class="md:hidden flex items-center space-x-2">
+                        <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-gray-400 hover:text-white focus:outline-none p-2 rounded-lg bg-brand-card border border-brand-border">
+                            <i class="fa-solid fa-bars text-xl"></i>
                         </button>
-                        <button onclick="switchTab('roster')" class="px-8 py-3.5 rounded-xl font-bold bg-brand-card hover:bg-brand-border text-gray-200 border border-brand-border transition-all duration-300">
-                            Узнать состав
-                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Team Overview Quick Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="bg-brand-card border border-brand-border p-6 rounded-2xl flex items-center space-x-4">
-                    <div class="p-4 bg-brand-red/10 border border-brand-red/20 rounded-xl text-brand-red">
-                        <i class="fa-solid fa-trophy text-3xl"></i>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-brand-card border-b border-brand-border px-4 pt-2 pb-4 space-y-2">
+                <button onclick="switchTab('home'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-white bg-brand-red/20 border border-brand-red/40 flex items-center">
+                    <i class="fa-solid fa-house w-6 text-brand-red"></i>Главная
+                </button>
+                <button onclick="switchTab('roster'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-brand-border flex items-center">
+                    <i class="fa-solid fa-users w-6 text-brand-red"></i>Состав
+                </button>
+                <button onclick="switchTab('stats'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-brand-border flex items-center">
+                    <i class="fa-solid fa-chart-line w-6 text-brand-red"></i>Статистика
+                </button>
+                
+                <!-- Mobile Social Links -->
+                <div class="pt-2 flex justify-center space-x-6 text-xl text-gray-400 border-t border-brand-border">
+                    <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red p-2" title="Discord">
+                        <i class="fa-brands fa-discord"></i>
+                    </a>
+                    <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red p-2" title="Telegram">
+                        <i class="fa-brands fa-telegram"></i>
+                    </a>
+                    <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red p-2" title="TikTok">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Dynamic Container -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+
+            <!-- TAB 1: HOME -->
+            <section id="tab-home" class="tab-content active space-y-12">
+                <!-- Hero Banner -->
+                <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-brand-card via-brand-card/90 to-brand-black border border-brand-border p-8 md:p-14 red-glow">
+                    <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-brand-red/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="max-w-2xl relative z-10 space-y-6">
+                        <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold bg-brand-red/10 text-brand-red border border-brand-red/30 tracking-widest uppercase">
+                            <span class="w-2 h-2 rounded-full bg-brand-red animate-ping mr-2"></span> Официальный сайт
+                        </span>
+                        <h1 class="text-4xl md:text-6xl font-bold heading-font tracking-tight text-white uppercase leading-none">
+                            Доминируй. <br/><span class="text-brand-red text-glow">Побеждай.</span> Создавай историю.
+                        </h1>
+                        <p class="text-gray-400 text-base md:text-lg leading-relaxed">
+                            Команда BICEPS Esports демонстрирует высочайший уровень игры, невероятную точность и командную синергию в текущем сезоне.
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="switchTab('stats')" class="px-8 py-3.5 rounded-xl font-bold bg-brand-red hover:bg-red-700 text-white transition-all duration-300 shadow-lg shadow-brand-red/30 flex items-center">
+                                Посмотреть статистику <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                            <button onclick="switchTab('roster')" class="px-8 py-3.5 rounded-xl font-bold bg-brand-card hover:bg-brand-border text-gray-200 border border-brand-border transition-all duration-300">
+                                Узнать состав
+                            </button>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Team Overview Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-brand-card border border-brand-border p-6 rounded-2xl flex items-center space-x-4">
+                        <div class="p-4 bg-brand-red/10 border border-brand-red/20 rounded-xl text-brand-red">
+                            <i class="fa-solid fa-trophy text-3xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-gray-400 text-sm font-medium">Общие Убийства</h4>
+                            <p class="text-3xl font-bold text-white heading-font" id="total-kills-overview">402</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-brand-card border border-brand-border p-6 rounded-2xl flex items-center space-x-4">
+                        <div class="p-4 bg-brand-red/10 border border-brand-red/20 rounded-xl text-brand-red">
+                            <i class="fa-solid fa-skull text-3xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-gray-400 text-sm font-medium">Общие Смерти</h4>
+                            <p class="text-3xl font-bold text-white heading-font" id="total-deaths-overview">453</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-brand-card border border-brand-border p-6 rounded-2xl flex items-center space-x-4">
+                        <div class="p-4 bg-brand-red/10 border border-brand-red/20 rounded-xl text-brand-red">
+                            <i class="fa-solid fa-crosshair text-3xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-gray-400 text-sm font-medium">Среднее K/D Команды</h4>
+                            <p class="text-3xl font-bold text-brand-red heading-font" id="avg-kd-overview">0.89</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-brand-card border border-brand-border p-6 rounded-2xl flex items-center space-x-4">
+                        <div class="p-4 bg-brand-red/10 border border-brand-red/20 rounded-xl text-brand-red">
+                            <i class="fa-solid fa-bullseye text-3xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-gray-400 text-sm font-medium">Попаданий в голову</h4>
+                            <p class="text-3xl font-bold text-white heading-font" id="total-hs-overview">198</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: ROSTER -->
+            <section id="tab-roster" class="tab-content space-y-8">
+                <div class="border-b border-brand-border pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h4 class="text-gray-400 text-sm font-medium">Общие Убийства</h4>
-                        <p class="text-3xl font-bold text-white heading-font" id="total-kills-overview">402</p>
+                        <h2 class="text-3xl md:text-4xl font-bold text-white heading-font uppercase">Состав <span class="text-brand-red">BICEPS</span></h2>
+                        <p class="text-gray-400 text-sm mt-1">Официальные игроки ростера нашей киберспортивной организации</p>
                     </div>
                 </div>
 
-                <div class="bg-brand-card border border-brand-border p-6 rounded-2xl flex items-center space-x-4">
-                    <div class="p-4 bg-brand-red/10 border border-brand-red/20 rounded-xl text-brand-red">
-                        <i class="fa-solid fa-skull text-3xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-gray-400 text-sm font-medium">Общие Смерти</h4>
-                        <p class="text-3xl font-bold text-white heading-font" id="total-deaths-overview">453</p>
-                    </div>
-                </div>
-
-                <div class="bg-brand-card border border-brand-border p-6 rounded-2xl flex items-center space-x-4">
-                    <div class="p-4 bg-brand-red/10 border border-brand-red/20 rounded-xl text-brand-red">
-                        <i class="fa-solid fa-crosshair text-3xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-gray-400 text-sm font-medium">Среднее K/D Команды</h4>
-                        <p class="text-3xl font-bold text-brand-red heading-font" id="avg-kd-overview">0.89</p>
-                    </div>
-                </div>
-
-                <div class="bg-brand-card border border-brand-border p-6 rounded-2xl flex items-center space-x-4">
-                    <div class="p-4 bg-brand-red/10 border border-brand-red/20 rounded-xl text-brand-red">
-                        <i class="fa-solid fa-bullseye text-3xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-gray-400 text-sm font-medium">Попаданий в голову</h4>
-                        <p class="text-3xl font-bold text-white heading-font" id="total-hs-overview">198</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 2: ROSTER -->
-        <section id="tab-roster" class="tab-content space-y-8">
-            <div class="border-b border-brand-border pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-white heading-font uppercase">Состав <span class="text-brand-red">BICEPS</span></h2>
-                    <p class="text-gray-400 text-sm mt-1">Официальные игроки ростера нашей киберспортивной организации</p>
-                </div>
-            </div>
-
-            <!-- Player Grid Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="roster-grid">
-                <!-- Injected via JS -->
-            </div>
-        </section>
-
-        <!-- TAB 3: STATS -->
-        <section id="tab-stats" class="tab-content space-y-8">
-            <div class="border-b border-brand-border pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-white heading-font uppercase">Статистика <span class="text-brand-red">Игроков</span></h2>
-                    <p class="text-gray-400 text-sm mt-1">Подробный учет фрагов, смертей, K/D, Headshot % и игровой производительности</p>
-                </div>
-                <!-- Search/Filter Input -->
-                <div class="relative w-full md:w-64">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                    <input type="text" id="stats-search" oninput="filterStats()" placeholder="Поиск по нику..." class="w-full bg-brand-card border border-brand-border rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-red transition-all">
-                </div>
-            </div>
-
-            <!-- Stats Leaderboard Table -->
-            <div class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden shadow-xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-brand-black/60 border-b border-brand-border text-gray-400 text-xs uppercase tracking-wider heading-font font-bold">
-                                <th class="py-4 px-6">#</th>
-                                <th class="py-4 px-6">Никнейм</th>
-                                <th class="py-4 px-6 text-center">Матчи</th>
-                                <th class="py-4 px-6 text-center">Убийства (K)</th>
-                                <th class="py-4 px-6 text-center">Смерти (D)</th>
-                                <th class="py-4 px-6 text-center">HS %</th>
-                                <th class="py-4 px-6 text-center">K/D Коэффициент</th>
-                                <th class="py-4 px-6 text-right">Карточка и История</th>
-                            </tr>
-                        </thead>
-                        <tbody id="stats-table-body" class="divide-y divide-brand-border text-sm">
-                            <!-- Injected via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Detailed Player Cards Stats -->
-            <div class="pt-6">
-                <h3 class="text-2xl font-bold text-white heading-font uppercase mb-6">Детализация и показатели</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="stats-cards-grid">
+                <!-- Player Grid Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="roster-grid">
                     <!-- Injected via JS -->
                 </div>
+            </section>
+
+            <!-- TAB 3: STATS (СТАТИСТИКА) -->
+            <section id="tab-stats" class="tab-content space-y-8">
+                <div class="border-b border-brand-border pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-white heading-font uppercase">Статистика <span class="text-brand-red">Игроков</span></h2>
+                        <p class="text-gray-400 text-sm mt-1">Подробный учет фрагов, смертей, K/D, Headshot % и игровой производительности</p>
+                    </div>
+                    <!-- Search/Filter Input -->
+                    <div class="relative w-full md:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                        <input type="text" id="stats-search" oninput="filterStats()" placeholder="Поиск по нику..." class="w-full bg-brand-card border border-brand-border rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-red transition-all">
+                    </div>
+                </div>
+
+                <!-- Stats Leaderboard Table -->
+                <div class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden shadow-xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-brand-black/60 border-b border-brand-border text-gray-400 text-xs uppercase tracking-wider heading-font font-bold">
+                                    <th class="py-4 px-6">#</th>
+                                    <th class="py-4 px-6">Никнейм</th>
+                                    <th class="py-4 px-6 text-center">Матчи</th>
+                                    <th class="py-4 px-6 text-center">Убийства (K)</th>
+                                    <th class="py-4 px-6 text-center">Смерти (D)</th>
+                                    <th class="py-4 px-6 text-center">HS %</th>
+                                    <th class="py-4 px-6 text-center">K/D Коэффициент</th>
+                                    <th class="py-4 px-6 text-right">Профиль</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stats-table-body" class="divide-y divide-brand-border text-sm">
+                                <!-- Injected via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Detailed Player Cards Stats -->
+                <div class="pt-6">
+                    <h3 class="text-2xl font-bold text-white heading-font uppercase mb-6">Детализация и показатели</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="stats-cards-grid">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-brand-black border-t border-brand-border py-8 mt-12">
+            <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
+                <div class="flex justify-center items-center space-x-2">
+                    <span class="text-lg font-bold text-white heading-font">BICEPS <span class="text-brand-red">ESPORTS</span></span>
+                </div>
+                
+                <!-- Footer Social Links -->
+                <div class="flex justify-center items-center space-x-6 text-lg text-gray-400">
+                    <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red transition-colors" title="Discord">
+                        <i class="fa-brands fa-discord"></i>
+                    </a>
+                    <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red transition-colors" title="Telegram">
+                        <i class="fa-brands fa-telegram"></i>
+                    </a>
+                    <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="hover:text-brand-red transition-colors" title="TikTok">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                </div>
+
+                <p class="text-xs text-gray-500">© 2026 BICEPS Esports. Все права защищены. Статистика сгенерирована на основе матчей.</p>
             </div>
-        </section>
+        </footer>
 
-    </main>
+    </div>
 
-    <!-- Modal Profile & Game Story Viewer -->
+    <!-- Modal Profile Viewer -->
     <div id="player-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-4 overflow-y-auto">
-        <div class="bg-brand-card border border-brand-border rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 my-8 max-h-[90vh] flex flex-col">
+        <div class="bg-brand-card border border-brand-border rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 my-8 flex flex-col">
             <!-- Modal Header -->
             <div class="p-6 md:p-8 bg-gradient-to-r from-brand-black via-brand-card to-brand-card border-b border-brand-border relative flex-shrink-0">
                 <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white w-9 h-9 rounded-full bg-brand-black/60 border border-brand-border flex items-center justify-center transition-all">
@@ -324,7 +435,7 @@
                 <!-- Combat Efficiency Progress Bar -->
                 <div class="space-y-2">
                     <div class="flex justify-between text-xs text-gray-400">
-                        <span>Боевая результативность (Win Efficiency)</span>
+                        <span>Боевая результативность (Эффективность)</span>
                         <span id="modal-eff-percentage" class="font-bold text-white">0%</span>
                     </div>
                     <div class="w-full bg-brand-black rounded-full h-3 overflow-hidden border border-brand-border">
@@ -340,33 +451,13 @@
                     <p id="modal-story" class="text-sm text-gray-300 leading-relaxed bg-brand-black/50 p-4 rounded-2xl border border-brand-border/80">
                     </p>
                 </div>
-
-                <!-- Recent Match Log Timeline -->
-                <div class="space-y-3">
-                    <h4 class="text-lg font-bold text-white heading-font uppercase flex items-center">
-                        <i class="fa-solid fa-gamepad text-brand-red mr-2"></i> Последние Матчи
-                    </h4>
-                    <div id="modal-history-list" class="space-y-2">
-                        <!-- Injected via JS -->
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-brand-black border-t border-brand-border py-8 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
-            <div class="flex justify-center items-center space-x-2">
-                <span class="text-lg font-bold text-white heading-font">BICEPS <span class="text-brand-red">ESPORTS</span></span>
-            </div>
-            <p class="text-xs text-gray-500">© 2026 BICEPS Esports. Все права защищены. Статистика и истории игроков обновлены.</p>
-        </div>
-    </footer>
-
     <!-- JavaScript Application Logic -->
     <script>
-        // Extended Player Data Source with Detailed Statistics & Game Stories
+        // Player Data Source
         const playersData = [
             { 
                 id: 'hahako', 
@@ -379,13 +470,8 @@
                 winRate: '64%',
                 adr: 94.2,
                 favWeapon: 'AK-47 / Vandal',
-                role: 'Star Fragger / Rifler',
-                story: 'hahako — ключевой керри команды BICEPS Esports. Известен феноменальным аимом и хладнокровием в сложных клатчах. В последнем турнирном сезоне показал лучший K/D в составе (1.30) и неоднократно переламывал ход неудачных раундов в одиночку.',
-                recentMatches: [
-                    { map: 'Mirage / Ascent', result: 'Победа', score: '13 - 9', stats: '24K / 14D / 4A', mvp: true },
-                    { map: 'Inferno / Haven', result: 'Победа', score: '13 - 11', stats: '21K / 15D / 2A', mvp: true },
-                    { map: 'Nuke / Bind', result: 'Поражение', score: '10 - 13', stats: '18K / 17D / 5A', mvp: false }
-                ]
+                role: 'Звездный рифлер / Фраггер',
+                story: 'hahako — ключевой керри команды BICEPS Esports. Известен феноменальным аимом и хладнокровием в сложных клатчах. В последнем турнирном сезоне показал лучший K/D в составе (1.30) и неоднократно переламывал ход неудачных раундов в одиночку.'
             },
             { 
                 id: 'farv1x', 
@@ -398,13 +484,8 @@
                 winRate: '57%',
                 adr: 81.5,
                 favWeapon: 'M4A1-S / Phantom',
-                role: 'Entry Fragger / Captain',
-                story: 'farv1x исполняет роль капитана и открывающего игрока (Entry Fragger). Задает агрессивный темп на первой линии атаки, создавая пространство для партнеров по команде. Держит идеальный баланс фрагов и смертей (K/D 1.00), отдавая приоритет эффективным разменам.',
-                recentMatches: [
-                    { map: 'Mirage / Ascent', result: 'Победа', score: '13 - 9', stats: '16K / 15D / 6A', mvp: false },
-                    { map: 'Inferno / Haven', result: 'Победа', score: '13 - 11', stats: '15K / 14D / 8A', mvp: false },
-                    { map: 'Dust II / Breeze', result: 'Победа', score: '13 - 7', stats: '19K / 11D / 4A', mvp: true }
-                ]
+                role: 'Капитан / Опен-фраггер',
+                story: 'farv1x исполняет роль капитана и открывающего игрока (Entry Fragger). Задает агрессивный темп на первой линии атаки, создавая пространство для партнеров по команде. Держит идеальный баланс фрагов и смертей (K/D 1.00), отдавая приоритет командным разменам.'
             },
             { 
                 id: 'makar', 
@@ -417,12 +498,8 @@
                 winRate: '60%',
                 adr: 76.4,
                 favWeapon: 'Galil AR / Specter',
-                role: 'Rifler',
-                story: 'Makar — надежный стрелок ростера, обладающий хорошим таймингом и позиционной дисциплиной. Хоть он и сыграл меньше матчей, его стабильный урон в раундах позволяет удерживать ключевые точки на карте.',
-                recentMatches: [
-                    { map: 'Ancient / Sunset', result: 'Победа', score: '13 - 8', stats: '12K / 10D / 3A', mvp: false },
-                    { map: 'Mirage / Ascent', result: 'Поражение', score: '9 - 13', stats: '8K / 11D / 2A', mvp: false }
-                ]
+                role: 'Рифлер',
+                story: 'Makar — надежный стрелок ростера, обладающий хорошим таймингом и позиционной дисциплиной. Хоть он и сыграл меньше матчей, его стабильный урон в раундах позволяет удерживать ключевые точки на карте.'
             },
             { 
                 id: 'cemeh', 
@@ -435,12 +512,8 @@
                 winRate: '50%',
                 adr: 74.8,
                 favWeapon: 'AK-47 / Guardian',
-                role: 'Support',
-                story: 'CEMEH выполняет саппорт-задачи в команде: раскидывает гранаты/способности, страхует тимейтов при заходах на пленты и берет на себя сложные ретейки. Забросил 84 ценных фрага за весь сезон.',
-                recentMatches: [
-                    { map: 'Mirage / Ascent', result: 'Победа', score: '13 - 9', stats: '14K / 13D / 9A', mvp: false },
-                    { map: 'Inferno / Haven', result: 'Поражение', score: '11 - 13', stats: '11K / 16D / 5A', mvp: false }
-                ]
+                role: 'Игрок поддержки (Support)',
+                story: 'CEMEH выполняет саппорт-задачи в команде: раскидывает гранаты/способности, страхует тиммейтов при заходах на пленты и берет на себя сложные ретейки. Забросил 84 ценных фрага за весь сезон.'
             },
             { 
                 id: 'nvrd', 
@@ -453,5 +526,239 @@
                 winRate: '33%',
                 adr: 69.1,
                 favWeapon: 'MP9 / Stinger',
-                role: 'Flex / Sub',
-                story: 'nvrd — универсальный флекс-игрок заменой ротации. Готов подменить любой фланг и закрывать узкие позиции на карте. Демонстрирует высокий процент попадений в голову для своего количества раундов.',
+                role: 'Запасной / Замена (Flex)',
+                story: 'nvrd — универсальный флекс-игрок заменой ротации. Готов подменить любой фланг и закрывать узкие позиции на карте. Демонстрирует высокий процент попадений в голову для своего количества раундов.'
+            },
+            { 
+                id: 'yumz', 
+                nickname: 'yumz', 
+                kills: 49, 
+                deaths: 118, 
+                kd: 0.42, 
+                headshots: 21,
+                matches: 14,
+                winRate: '42%',
+                adr: 54.0,
+                favWeapon: 'AWP / Operator',
+                role: 'Снайпер (AWPer)',
+                story: 'yumz отвечает за снайперский контроллинг с AWP. Провоцирует соперников на ошибку, держит дальние дистанции и дает важнейшие энтри-пики на банах соперника. Имеет ключевой вклад в экономические победы команды.'
+            }
+        ];
+
+        // Safe DOM helper
+        function safeSetText(id, text) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.innerText = text;
+            }
+        }
+
+        // Smooth Entrance Transition
+        function enterApp() {
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const mainApp = document.getElementById('main-app');
+            if (welcomeScreen) welcomeScreen.classList.add('hidden-welcome');
+            setTimeout(() => {
+                if (mainApp) mainApp.classList.add('visible-app');
+            }, 100);
+        }
+
+        // Global Overview Stats Calculation
+        function updateOverviewStats() {
+            const totalKills = playersData.reduce((acc, p) => acc + p.kills, 0);
+            const totalDeaths = playersData.reduce((acc, p) => acc + p.deaths, 0);
+            const totalHS = playersData.reduce((acc, p) => acc + p.headshots, 0);
+            const avgKd = (totalKills / totalDeaths).toFixed(2);
+
+            safeSetText('total-kills-overview', totalKills);
+            safeSetText('total-deaths-overview', totalDeaths);
+            safeSetText('avg-kd-overview', avgKd);
+            safeSetText('total-hs-overview', totalHS);
+        }
+
+        // Sort players by K/D ratio descending for stats
+        const sortedPlayers = [...playersData].sort((a, b) => b.kd - a.kd);
+
+        // Switch Tabs Functionality
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            const targetTab = document.getElementById(`tab-${tabId}`);
+            if(targetTab) targetTab.classList.add('active');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = 'nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-gray-400 hover:text-white hover:bg-brand-border/50';
+            });
+
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            if(activeBtn) {
+                activeBtn.className = 'nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-white bg-brand-red shadow-md shadow-brand-red/30';
+            }
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) menu.classList.toggle('hidden');
+        }
+
+        // Render Roster Cards
+        function renderRoster() {
+            const container = document.getElementById('roster-grid');
+            if (!container) return;
+            container.innerHTML = playersData.map(player => `
+                <div class="bg-brand-card border border-brand-border hover:border-brand-red/50 rounded-2xl p-6 transition-all duration-300 red-glow-hover flex flex-col justify-between group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-14 h-14 rounded-xl bg-brand-red/10 border border-brand-red/30 flex items-center justify-center text-brand-red font-bold text-2xl heading-font group-hover:bg-brand-red group-hover:text-white transition-all shadow-md">
+                                ${player.nickname.substring(0, 2).toUpperCase()}
+                            </div>
+                            <span class="text-xs px-3 py-1 rounded-full bg-brand-black border border-brand-border text-gray-400 font-mono">
+                                K/D: <strong class="${player.kd >= 1.0 ? 'text-green-400' : 'text-brand-red'}">${player.kd.toFixed(2)}</strong>
+                            </span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white heading-font tracking-wide cursor-pointer hover:text-brand-red transition-colors" onclick="openModal('${player.id}')">${player.nickname}</h3>
+                            <p class="text-xs text-gray-400 mt-1">${player.role}</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-brand-border/50 flex justify-between items-center text-xs">
+                        <span class="text-gray-500">Убийств: <strong class="text-gray-300">${player.kills}</strong></span>
+                        <button onclick="openModal('${player.id}')" class="text-brand-red hover:text-white bg-brand-red/10 hover:bg-brand-red px-3 py-1.5 rounded-lg font-semibold flex items-center transition-all">
+                            Профиль игрока <i class="fa-solid fa-chevron-right ml-1.5 text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Stats Table & Detail Cards
+        function renderStats(data = sortedPlayers) {
+            const tableBody = document.getElementById('stats-table-body');
+            const cardsGrid = document.getElementById('stats-cards-grid');
+
+            if (tableBody) {
+                tableBody.innerHTML = data.map((player, index) => {
+                    const hsPercent = Math.round((player.headshots / player.kills) * 100) || 0;
+                    return `
+                        <tr class="hover:bg-brand-border/30 transition-colors">
+                            <td class="py-4 px-6 font-bold heading-font ${index === 0 ? 'text-amber-400' : 'text-gray-500'}">
+                                ${index === 0 ? '<i class="fa-solid fa-crown mr-1"></i> 1' : index + 1}
+                            </td>
+                            <td class="py-4 px-6 font-semibold text-white">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-8 h-8 rounded-lg bg-brand-red/10 border border-brand-red/20 text-brand-red text-xs font-bold flex items-center justify-center">
+                                        ${player.nickname.substring(0, 2).toUpperCase()}
+                                    </span>
+                                    <span class="cursor-pointer hover:text-brand-red transition-colors" onclick="openModal('${player.id}')">${player.nickname}</span>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 text-center font-mono text-gray-300">${player.matches}</td>
+                            <td class="py-4 px-6 text-center font-mono font-medium text-gray-200">${player.kills}</td>
+                            <td class="py-4 px-6 text-center font-mono font-medium text-gray-400">${player.deaths}</td>
+                            <td class="py-4 px-6 text-center font-mono font-medium text-amber-400">${hsPercent}%</td>
+                            <td class="py-4 px-6 text-center font-mono font-bold text-lg ${player.kd >= 1.0 ? 'text-green-400' : 'text-brand-red'}">
+                                ${player.kd.toFixed(2)}
+                            </td>
+                            <td class="py-4 px-6 text-right">
+                                <button onclick="openModal('${player.id}')" class="text-xs text-brand-red hover:text-white bg-brand-red/10 hover:bg-brand-red px-3 py-1.5 rounded-lg font-semibold transition-all inline-flex items-center">
+                                    Профиль <i class="fa-solid fa-id-card ml-1.5"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            if (cardsGrid) {
+                cardsGrid.innerHTML = data.map(player => `
+                    <div class="bg-brand-card border border-brand-border rounded-2xl p-6 space-y-4 hover:border-brand-red/40 transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-xl font-bold text-white heading-font cursor-pointer hover:text-brand-red" onclick="openModal('${player.id}')">${player.nickname}</h4>
+                                <span class="text-xs text-gray-400">${player.role}</span>
+                            </div>
+                            <span class="text-xs font-semibold px-2.5 py-1 rounded bg-brand-red/10 border border-brand-red/30 text-brand-red font-mono">
+                                KD: ${player.kd.toFixed(2)}
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 text-center">
+                            <div class="bg-brand-black/50 p-3 rounded-xl border border-brand-border">
+                                <span class="text-xs text-gray-500 block uppercase">Убийства</span>
+                                <span class="text-2xl font-bold text-white heading-font">${player.kills}</span>
+                            </div>
+                            <div class="bg-brand-black/50 p-3 rounded-xl border border-brand-border">
+                                <span class="text-xs text-gray-500 block uppercase">Смерти</span>
+                                <span class="text-2xl font-bold text-gray-400 heading-font">${player.deaths}</span>
+                            </div>
+                        </div>
+                        <button onclick="openModal('${player.id}')" class="w-full py-2 bg-brand-black hover:bg-brand-red text-gray-300 hover:text-white text-xs font-bold rounded-xl border border-brand-border transition-all flex items-center justify-center">
+                            Посмотреть профиль <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Filter Stats Search Input
+        function filterStats() {
+            const searchInput = document.getElementById('stats-search');
+            if (!searchInput) return;
+            const query = searchInput.value.toLowerCase();
+            const filtered = sortedPlayers.filter(p => p.nickname.toLowerCase().includes(query));
+            renderStats(filtered);
+        }
+
+        // Open Individual Player Card Modal
+        function openModal(playerId) {
+            const player = playersData.find(p => p.id === playerId);
+            if(!player) return;
+
+            safeSetText('modal-avatar', player.nickname.substring(0, 2).toUpperCase());
+            safeSetText('modal-nickname', player.nickname);
+            safeSetText('modal-role-badge', player.role);
+
+            const weaponEl = document.getElementById('modal-weapon');
+            if (weaponEl) {
+                const span = weaponEl.querySelector('span');
+                if (span) span.innerText = player.favWeapon;
+            }
+
+            safeSetText('modal-kills', player.kills);
+            safeSetText('modal-deaths', player.deaths);
+            safeSetText('modal-kd', player.kd.toFixed(2));
+
+            const hsPercent = Math.round((player.headshots / player.kills) * 100) || 0;
+            safeSetText('modal-hs', hsPercent + '%');
+
+            safeSetText('modal-matches', player.matches);
+            safeSetText('modal-winrate', player.winRate);
+            safeSetText('modal-adr', player.adr);
+
+            const effPercentage = Math.min(Math.round((player.kills / (player.kills + player.deaths)) * 100), 100);
+            safeSetText('modal-eff-percentage', effPercentage + '%');
+
+            const bar = document.getElementById('modal-bar');
+            if (bar) bar.style.width = effPercentage + '%';
+
+            safeSetText('modal-story', player.story);
+
+            const modal = document.getElementById('player-modal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('player-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            updateOverviewStats();
+            renderRoster();
+            renderStats();
+        };
+    </script>
+</body>
+</html>
