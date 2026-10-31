@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BICEPS Esports | Команда и Статистика</title>
+    <title>BICEPS Esports | Команда, Статистика и История Игр</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -40,7 +40,6 @@
         .heading-font {
             font-family: 'Rajdhani', sans-serif;
         }
-        /* Custom Glowing Effect */
         .red-glow {
             box-shadow: 0 0 25px rgba(229, 9, 20, 0.25);
         }
@@ -50,7 +49,6 @@
         .text-glow {
             text-shadow: 0 0 12px rgba(229, 9, 20, 0.6);
         }
-        /* Smooth Fade Transitions */
         .tab-content {
             display: none;
             opacity: 0;
@@ -59,6 +57,20 @@
         .tab-content.active {
             display: block;
             opacity: 1;
+        }
+        /* Custom scrollbar for player modal game story */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #0A0A0C;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #26262E;
+            border-radius: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #E50914;
         }
     </style>
 </head>
@@ -144,7 +156,7 @@
             </div>
 
             <!-- Team Overview Quick Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="bg-brand-card border border-brand-border p-6 rounded-2xl flex items-center space-x-4">
                     <div class="p-4 bg-brand-red/10 border border-brand-red/20 rounded-xl text-brand-red">
                         <i class="fa-solid fa-trophy text-3xl"></i>
@@ -170,8 +182,18 @@
                         <i class="fa-solid fa-crosshair text-3xl"></i>
                     </div>
                     <div>
-                        <h4 class="text-gray-400 text-sm font-medium">Среднее К/Д Команды</h4>
+                        <h4 class="text-gray-400 text-sm font-medium">Среднее K/D Команды</h4>
                         <p class="text-3xl font-bold text-brand-red heading-font" id="avg-kd-overview">0.89</p>
+                    </div>
+                </div>
+
+                <div class="bg-brand-card border border-brand-border p-6 rounded-2xl flex items-center space-x-4">
+                    <div class="p-4 bg-brand-red/10 border border-brand-red/20 rounded-xl text-brand-red">
+                        <i class="fa-solid fa-bullseye text-3xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-400 text-sm font-medium">Попаданий в голову</h4>
+                        <p class="text-3xl font-bold text-white heading-font" id="total-hs-overview">198</p>
                     </div>
                 </div>
             </div>
@@ -192,12 +214,12 @@
             </div>
         </section>
 
-        <!-- TAB 3: STATS (СТАТИСТИКА) -->
+        <!-- TAB 3: STATS -->
         <section id="tab-stats" class="tab-content space-y-8">
             <div class="border-b border-brand-border pb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-3xl md:text-4xl font-bold text-white heading-font uppercase">Статистика <span class="text-brand-red">Игроков</span></h2>
-                    <p class="text-gray-400 text-sm mt-1">Полный подсчет фрагов, смертей и K/D коэффициента по данным матчей</p>
+                    <p class="text-gray-400 text-sm mt-1">Подробный учет фрагов, смертей, K/D, Headshot % и игровой производительности</p>
                 </div>
                 <!-- Search/Filter Input -->
                 <div class="relative w-full md:w-64">
@@ -214,10 +236,12 @@
                             <tr class="bg-brand-black/60 border-b border-brand-border text-gray-400 text-xs uppercase tracking-wider heading-font font-bold">
                                 <th class="py-4 px-6">#</th>
                                 <th class="py-4 px-6">Никнейм</th>
+                                <th class="py-4 px-6 text-center">Матчи</th>
                                 <th class="py-4 px-6 text-center">Убийства (K)</th>
                                 <th class="py-4 px-6 text-center">Смерти (D)</th>
+                                <th class="py-4 px-6 text-center">HS %</th>
                                 <th class="py-4 px-6 text-center">K/D Коэффициент</th>
-                                <th class="py-4 px-6 text-right">Эффективность</th>
+                                <th class="py-4 px-6 text-right">Карточка и История</th>
                             </tr>
                         </thead>
                         <tbody id="stats-table-body" class="divide-y divide-brand-border text-sm">
@@ -229,7 +253,7 @@
 
             <!-- Detailed Player Cards Stats -->
             <div class="pt-6">
-                <h3 class="text-2xl font-bold text-white heading-font uppercase mb-6">Детализация по каждому игроку</h3>
+                <h3 class="text-2xl font-bold text-white heading-font uppercase mb-6">Детализация и показатели</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="stats-cards-grid">
                     <!-- Injected via JS -->
                 </div>
@@ -238,44 +262,92 @@
 
     </main>
 
-    <!-- Modal Profile Viewer -->
-    <div id="player-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-brand-card border border-brand-border rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white w-9 h-9 rounded-full bg-brand-black/50 border border-brand-border flex items-center justify-center transition-all">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="p-8 space-y-6">
-                <div class="flex items-center space-x-4">
-                    <div id="modal-avatar" class="w-16 h-16 rounded-2xl bg-brand-red/20 border border-brand-red/40 flex items-center justify-center text-brand-red font-bold text-2xl heading-font">
+    <!-- Modal Profile & Game Story Viewer -->
+    <div id="player-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center hidden p-4 overflow-y-auto">
+        <div class="bg-brand-card border border-brand-border rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 my-8 max-h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="p-6 md:p-8 bg-gradient-to-r from-brand-black via-brand-card to-brand-card border-b border-brand-border relative flex-shrink-0">
+                <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white w-9 h-9 rounded-full bg-brand-black/60 border border-brand-border flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+                <div class="flex items-center space-x-5">
+                    <div id="modal-avatar" class="w-20 h-20 rounded-2xl bg-brand-red/20 border-2 border-brand-red flex items-center justify-center text-brand-red font-bold text-3xl heading-font shadow-lg shadow-brand-red/20">
                     </div>
                     <div>
-                        <h3 id="modal-nickname" class="text-2xl font-bold text-white heading-font tracking-wide"></h3>
-                        <span class="text-xs text-brand-red font-semibold uppercase tracking-wider">Игрок BICEPS Esports</span>
+                        <div class="flex items-center space-x-3">
+                            <h3 id="modal-nickname" class="text-3xl font-bold text-white heading-font tracking-wide"></h3>
+                            <span id="modal-role-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-brand-red/10 text-brand-red border border-brand-red/30 uppercase"></span>
+                        </div>
+                        <p id="modal-weapon" class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-gun text-brand-red mr-1"></i> Любимое оружие: <span class="text-gray-200 font-medium"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Content - Scrollable -->
+            <div class="p-6 md:p-8 space-y-6 overflow-y-auto custom-scroll flex-grow">
+                <!-- Main Stats Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="bg-brand-black/60 p-3.5 rounded-2xl border border-brand-border text-center">
+                        <span class="block text-xs text-gray-400 uppercase font-medium">Убийств</span>
+                        <span id="modal-kills" class="text-2xl font-bold text-white heading-font"></span>
+                    </div>
+                    <div class="bg-brand-black/60 p-3.5 rounded-2xl border border-brand-border text-center">
+                        <span class="block text-xs text-gray-400 uppercase font-medium">Смертей</span>
+                        <span id="modal-deaths" class="text-2xl font-bold text-white heading-font"></span>
+                    </div>
+                    <div class="bg-brand-black/60 p-3.5 rounded-2xl border border-brand-border text-center">
+                        <span class="block text-xs text-gray-400 uppercase font-medium">K/D</span>
+                        <span id="modal-kd" class="text-2xl font-bold text-brand-red heading-font"></span>
+                    </div>
+                    <div class="bg-brand-black/60 p-3.5 rounded-2xl border border-brand-border text-center">
+                        <span class="block text-xs text-gray-400 uppercase font-medium">HS %</span>
+                        <span id="modal-hs" class="text-2xl font-bold text-amber-400 heading-font"></span>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-3 bg-brand-black/60 p-4 rounded-2xl border border-brand-border text-center">
+                <!-- Secondary Advanced Stats -->
+                <div class="grid grid-cols-3 gap-3 bg-brand-black/40 p-4 rounded-2xl border border-brand-border/60 text-center text-xs">
                     <div>
-                        <span class="block text-xs text-gray-400">Убийств</span>
-                        <span id="modal-kills" class="text-xl font-bold text-white heading-font"></span>
+                        <span class="text-gray-400 block">Матчей сыграно</span>
+                        <span id="modal-matches" class="text-base font-bold text-white heading-font"></span>
                     </div>
                     <div>
-                        <span class="block text-xs text-gray-400">Смертей</span>
-                        <span id="modal-deaths" class="text-xl font-bold text-white heading-font"></span>
+                        <span class="text-gray-400 block">Винрейт</span>
+                        <span id="modal-winrate" class="text-base font-bold text-green-400 heading-font"></span>
                     </div>
                     <div>
-                        <span class="block text-xs text-gray-400">K/D</span>
-                        <span id="modal-kd" class="text-xl font-bold text-brand-red heading-font"></span>
+                        <span class="text-gray-400 block">Средний Урон (ADR)</span>
+                        <span id="modal-adr" class="text-base font-bold text-white heading-font"></span>
                     </div>
                 </div>
 
+                <!-- Combat Efficiency Progress Bar -->
                 <div class="space-y-2">
                     <div class="flex justify-between text-xs text-gray-400">
-                        <span>Боевая результативность</span>
-                        <span id="modal-eff-percentage">0%</span>
+                        <span>Боевая результативность (Win Efficiency)</span>
+                        <span id="modal-eff-percentage" class="font-bold text-white">0%</span>
                     </div>
-                    <div class="w-full bg-brand-black rounded-full h-2.5 overflow-hidden border border-brand-border">
-                        <div id="modal-bar" class="bg-brand-red h-2.5 rounded-full transition-all duration-500"></div>
+                    <div class="w-full bg-brand-black rounded-full h-3 overflow-hidden border border-brand-border">
+                        <div id="modal-bar" class="bg-brand-red h-3 rounded-full transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <!-- Player Bio & Gaming Story -->
+                <div class="space-y-3 pt-2">
+                    <h4 class="text-lg font-bold text-white heading-font uppercase flex items-center">
+                        <i class="fa-solid fa-book-open text-brand-red mr-2"></i> История Игрока (Game Story)
+                    </h4>
+                    <p id="modal-story" class="text-sm text-gray-300 leading-relaxed bg-brand-black/50 p-4 rounded-2xl border border-brand-border/80">
+                    </p>
+                </div>
+
+                <!-- Recent Match Log Timeline -->
+                <div class="space-y-3">
+                    <h4 class="text-lg font-bold text-white heading-font uppercase flex items-center">
+                        <i class="fa-solid fa-gamepad text-brand-red mr-2"></i> Последние Матчи
+                    </h4>
+                    <div id="modal-history-list" class="space-y-2">
+                        <!-- Injected via JS -->
                     </div>
                 </div>
             </div>
@@ -288,177 +360,98 @@
             <div class="flex justify-center items-center space-x-2">
                 <span class="text-lg font-bold text-white heading-font">BICEPS <span class="text-brand-red">ESPORTS</span></span>
             </div>
-            <p class="text-xs text-gray-500">© 2026 BICEPS Esports. Все права защищены. Статистика сгенерирована на основе матчей.</p>
+            <p class="text-xs text-gray-500">© 2026 BICEPS Esports. Все права защищены. Статистика и истории игроков обновлены.</p>
         </div>
     </footer>
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Player Data Source based on calculating math equations from notes
+        // Extended Player Data Source with Detailed Statistics & Game Stories
         const playersData = [
-            { id: 'hahako', nickname: 'hahako', kills: 136, deaths: 105, kd: 1.30, role: 'Star Fragger / Rifler' },
-            { id: 'farv1x', nickname: 'farv1x', kills: 91, deaths: 91, kd: 1.00, role: 'Entry Fragger / Captain' },
-            { id: 'makar', nickname: 'Makar', kills: 28, deaths: 30, kd: 0.93, role: 'Rifler' },
-            { id: 'cemeh', nickname: 'CEMEH', kills: 84, deaths: 92, kd: 0.91, role: 'Support' },
-            { id: 'nvrd', nickname: 'nvrd', kills: 14, deaths: 17, kd: 0.82, role: 'Flex' },
-            { id: 'yumz', nickname: 'yumz', kills: 49, deaths: 118, kd: 0.42, role: 'Sniper / AWPer' }
-        ];
-
-        // Sort players by K/D ratio descending for stats
-        const sortedPlayers = [...playersData].sort((a, b) => b.kd - a.kd);
-
-        // Switch Tabs Functionality
-        function switchTab(tabId) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            // Show target tab
-            const targetTab = document.getElementById(`tab-${tabId}`);
-            if(targetTab) targetTab.classList.add('active');
-
-            // Reset navigation button styling
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.className = 'nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-gray-400 hover:text-white hover:bg-brand-border/50';
-            });
-
-            // Highlight active button
-            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
-            if(activeBtn) {
-                activeBtn.className = 'nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-white bg-brand-red shadow-md shadow-brand-red/30';
-            }
-        }
-
-        // Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-
-        // Render Roster Cards
-        function renderRoster() {
-            const container = document.getElementById('roster-grid');
-            container.innerHTML = playersData.map(player => `
-                <div class="bg-brand-card border border-brand-border hover:border-brand-red/50 rounded-2xl p-6 transition-all duration-300 red-glow-hover flex flex-col justify-between group">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <div class="w-14 h-14 rounded-xl bg-brand-red/10 border border-brand-red/30 flex items-center justify-center text-brand-red font-bold text-2xl heading-font group-hover:bg-brand-red group-hover:text-white transition-all">
-                                ${player.nickname.substring(0, 2).toUpperCase()}
-                            </div>
-                            <span class="text-xs px-3 py-1 rounded-full bg-brand-black border border-brand-border text-gray-400 font-mono">
-                                K/D: <strong class="${player.kd >= 1.0 ? 'text-green-400' : 'text-brand-red'}">${player.kd.toFixed(2)}</strong>
-                            </span>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white heading-font tracking-wide">${player.nickname}</h3>
-                            <p class="text-xs text-gray-400 mt-1">${player.role}</p>
-                        </div>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-brand-border/50 flex justify-between items-center text-xs">
-                        <span class="text-gray-500">Убийств: <strong class="text-gray-300">${player.kills}</strong></span>
-                        <button onclick="openModal('${player.id}')" class="text-brand-red hover:underline font-semibold flex items-center">
-                            Профиль <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Render Stats Table & Detail Cards
-        function renderStats(data = sortedPlayers) {
-            const tableBody = document.getElementById('stats-table-body');
-            const cardsGrid = document.getElementById('stats-cards-grid');
-
-            // Table Render
-            tableBody.innerHTML = data.map((player, index) => {
-                const effPercentage = Math.min(Math.round((player.kills / (player.kills + player.deaths)) * 100), 100);
-                return `
-                    <tr class="hover:bg-brand-border/30 transition-colors">
-                        <td class="py-4 px-6 font-bold heading-font ${index === 0 ? 'text-amber-400' : 'text-gray-500'}">
-                            ${index === 0 ? '<i class="fa-solid fa-crown mr-1"></i> 1' : index + 1}
-                        </td>
-                        <td class="py-4 px-6 font-semibold text-white">
-                            <div class="flex items-center space-x-3">
-                                <span class="w-8 h-8 rounded-lg bg-brand-red/10 border border-brand-red/20 text-brand-red text-xs font-bold flex items-center justify-center">
-                                    ${player.nickname.substring(0, 2).toUpperCase()}
-                                </span>
-                                <span class="cursor-pointer hover:text-brand-red transition-colors" onclick="openModal('${player.id}')">${player.nickname}</span>
-                            </div>
-                        </td>
-                        <td class="py-4 px-6 text-center font-mono font-medium text-gray-200">${player.kills}</td>
-                        <td class="py-4 px-6 text-center font-mono font-medium text-gray-400">${player.deaths}</td>
-                        <td class="py-4 px-6 text-center font-mono font-bold text-lg ${player.kd >= 1.0 ? 'text-green-400' : 'text-brand-red'}">
-                            ${player.kd.toFixed(2)}
-                        </td>
-                        <td class="py-4 px-6 text-right">
-                            <div class="flex items-center justify-end space-x-2">
-                                <div class="w-24 bg-brand-black rounded-full h-2 overflow-hidden border border-brand-border">
-                                    <div class="bg-brand-red h-2 rounded-full" style="width: ${effPercentage}%"></div>
-                                </div>
-                                <span class="text-xs font-mono text-gray-400 w-8">${effPercentage}%</span>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-
-            // Cards Render
-            cardsGrid.innerHTML = data.map(player => `
-                <div class="bg-brand-card border border-brand-border rounded-2xl p-6 space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h4 class="text-xl font-bold text-white heading-font">${player.nickname}</h4>
-                        <span class="text-xs font-semibold px-2.5 py-1 rounded bg-brand-red/10 border border-brand-red/30 text-brand-red">
-                            KD: ${player.kd.toFixed(2)}
-                        </span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3 text-center">
-                        <div class="bg-brand-black/50 p-3 rounded-xl border border-brand-border">
-                            <span class="text-xs text-gray-500 block uppercase">Убийства</span>
-                            <span class="text-2xl font-bold text-white heading-font">${player.kills}</span>
-                        </div>
-                        <div class="bg-brand-black/50 p-3 rounded-xl border border-brand-border">
-                            <span class="text-xs text-gray-500 block uppercase">Смерти</span>
-                            <span class="text-2xl font-bold text-gray-400 heading-font">${player.deaths}</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Filter Stats Search Input
-        function filterStats() {
-            const query = document.getElementById('stats-search').value.toLowerCase();
-            const filtered = sortedPlayers.filter(p => p.nickname.toLowerCase().includes(query));
-            renderStats(filtered);
-        }
-
-        // Modal Functionality
-        function openModal(playerId) {
-            const player = playersData.find(p => p.id === playerId);
-            if(!player) return;
-
-            document.getElementById('modal-avatar').innerText = player.nickname.substring(0, 2).toUpperCase();
-            document.getElementById('modal-nickname').innerText = player.nickname;
-            document.getElementById('modal-kills').innerText = player.kills;
-            document.getElementById('modal-deaths').innerText = player.deaths;
-            document.getElementById('modal-kd').innerText = player.kd.toFixed(2);
-
-            const effPercentage = Math.min(Math.round((player.kills / (player.kills + player.deaths)) * 100), 100);
-            document.getElementById('modal-eff-percentage').innerText = effPercentage + '%';
-            document.getElementById('modal-bar').style.width = effPercentage + '%';
-
-            document.getElementById('player-modal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('player-modal').classList.add('hidden');
-        }
-
-        // Initialize App on Window Load
-        window.onload = function() {
-            renderRoster();
-            renderStats();
-        };
-    </script>
-</body>
-</html>
+            { 
+                id: 'hahako', 
+                nickname: 'hahako', 
+                kills: 136, 
+                deaths: 105, 
+                kd: 1.30, 
+                headshots: 72,
+                matches: 14,
+                winRate: '64%',
+                adr: 94.2,
+                favWeapon: 'AK-47 / Vandal',
+                role: 'Star Fragger / Rifler',
+                story: 'hahako — ключевой керри команды BICEPS Esports. Известен феноменальным аимом и хладнокровием в сложных клатчах. В последнем турнирном сезоне показал лучший K/D в составе (1.30) и неоднократно переламывал ход неудачных раундов в одиночку.',
+                recentMatches: [
+                    { map: 'Mirage / Ascent', result: 'Победа', score: '13 - 9', stats: '24K / 14D / 4A', mvp: true },
+                    { map: 'Inferno / Haven', result: 'Победа', score: '13 - 11', stats: '21K / 15D / 2A', mvp: true },
+                    { map: 'Nuke / Bind', result: 'Поражение', score: '10 - 13', stats: '18K / 17D / 5A', mvp: false }
+                ]
+            },
+            { 
+                id: 'farv1x', 
+                nickname: 'farv1x', 
+                kills: 91, 
+                deaths: 91, 
+                kd: 1.00, 
+                headshots: 45,
+                matches: 14,
+                winRate: '57%',
+                adr: 81.5,
+                favWeapon: 'M4A1-S / Phantom',
+                role: 'Entry Fragger / Captain',
+                story: 'farv1x исполняет роль капитана и открывающего игрока (Entry Fragger). Задает агрессивный темп на первой линии атаки, создавая пространство для партнеров по команде. Держит идеальный баланс фрагов и смертей (K/D 1.00), отдавая приоритет эффективным разменам.',
+                recentMatches: [
+                    { map: 'Mirage / Ascent', result: 'Победа', score: '13 - 9', stats: '16K / 15D / 6A', mvp: false },
+                    { map: 'Inferno / Haven', result: 'Победа', score: '13 - 11', stats: '15K / 14D / 8A', mvp: false },
+                    { map: 'Dust II / Breeze', result: 'Победа', score: '13 - 7', stats: '19K / 11D / 4A', mvp: true }
+                ]
+            },
+            { 
+                id: 'makar', 
+                nickname: 'Makar', 
+                kills: 28, 
+                deaths: 30, 
+                kd: 0.93, 
+                headshots: 14,
+                matches: 5,
+                winRate: '60%',
+                adr: 76.4,
+                favWeapon: 'Galil AR / Specter',
+                role: 'Rifler',
+                story: 'Makar — надежный стрелок ростера, обладающий хорошим таймингом и позиционной дисциплиной. Хоть он и сыграл меньше матчей, его стабильный урон в раундах позволяет удерживать ключевые точки на карте.',
+                recentMatches: [
+                    { map: 'Ancient / Sunset', result: 'Победа', score: '13 - 8', stats: '12K / 10D / 3A', mvp: false },
+                    { map: 'Mirage / Ascent', result: 'Поражение', score: '9 - 13', stats: '8K / 11D / 2A', mvp: false }
+                ]
+            },
+            { 
+                id: 'cemeh', 
+                nickname: 'CEMEH', 
+                kills: 84, 
+                deaths: 92, 
+                kd: 0.91, 
+                headshots: 38,
+                matches: 14,
+                winRate: '50%',
+                adr: 74.8,
+                favWeapon: 'AK-47 / Guardian',
+                role: 'Support',
+                story: 'CEMEH выполняет саппорт-задачи в команде: раскидывает гранаты/способности, страхует тимейтов при заходах на пленты и берет на себя сложные ретейки. Забросил 84 ценных фрага за весь сезон.',
+                recentMatches: [
+                    { map: 'Mirage / Ascent', result: 'Победа', score: '13 - 9', stats: '14K / 13D / 9A', mvp: false },
+                    { map: 'Inferno / Haven', result: 'Поражение', score: '11 - 13', stats: '11K / 16D / 5A', mvp: false }
+                ]
+            },
+            { 
+                id: 'nvrd', 
+                nickname: 'nvrd', 
+                kills: 14, 
+                deaths: 17, 
+                kd: 0.82, 
+                headshots: 8,
+                matches: 3,
+                winRate: '33%',
+                adr: 69.1,
+                favWeapon: 'MP9 / Stinger',
+                role: 'Flex / Sub',
+                story: 'nvrd — универсальный флекс-игрок заменой ротации. Готов подменить любой фланг и закрывать узкие позиции на карте. Демонстрирует высокий процент попадений в голову для своего количества раундов.',
