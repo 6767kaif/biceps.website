@@ -271,6 +271,63 @@ h2{font-size:clamp(38px,6vw,64px);letter-spacing:-3px;margin:12px 0 0;text-trans
   line-height:1;
 }
 
+/* SOCIAL MEDIA SECTION */
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+.social-card {
+  background: linear-gradient(145deg, #161616, #0a0a0a);
+  border: 1px solid #262626;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+  position: relative;
+  overflow: hidden;
+  transition: all .3s ease;
+}
+.social-card:hover {
+  border-color: var(--red);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 35px rgba(255, 30, 39, 0.18);
+}
+.social-card-icon {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+.social-card h3 {
+  font-size: 24px;
+  font-weight: 900;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.social-card p {
+  color: #888;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 25px;
+}
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--red);
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: gap .2s ease;
+}
+.social-card:hover .social-link {
+  color: var(--white);
+  gap: 12px;
+}
+
 /* SMOOTH SLIDING SIDE DRAWER */
 .drawer-backdrop{
   position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);
@@ -341,6 +398,7 @@ footer a{color:#aaa;transition:color .2s}footer a:hover{color:var(--red)}
 
 @media(max-width:850px){
   .roster-grid{grid-template-columns:repeat(2, 1fr)}
+  .social-grid{grid-template-columns:1fr}
 }
 
 @media(max-width:760px){
@@ -380,6 +438,7 @@ footer a{color:#aaa;transition:color .2s}footer a:hover{color:var(--red)}
   <div class="navlinks">
     <a href="#about">О команде</a>
     <a href="#roster">Состав</a>
+    <a href="#socials">Соцсети</a>
     <a href="#values">Принципы</a>
     <a href="#join">Вступление</a>
   </div>
@@ -521,6 +580,49 @@ footer a{color:#aaa;transition:color .2s}footer a:hover{color:var(--red)}
     </div>
   </section>
 
+  <!-- РАЗДЕЛ SOCIALS / СОЦСЕТИ -->
+  <section id="socials" style="padding-top:40px;">
+    <div class="section-top">
+      <div>
+        <div class="kicker">Медиа платформы</div>
+        <h2>СОЦИАЛЬНЫЕ СЕТИ</h2>
+      </div>
+      <p>Следите за новостями команды, хайлайтами и праками в наших официальных соцсетях.</p>
+    </div>
+
+    <div class="social-grid">
+      <!-- Discord Card -->
+      <a class="social-card" href="https://discord.gg/rrENKMSQm" target="_blank" rel="noopener">
+        <div>
+          <div class="social-card-icon">🎮</div>
+          <h3>DISCORD</h3>
+          <p>Общение с игроками, поиск тимейтов, участие в анонсах и праках команды.</p>
+        </div>
+        <span class="social-link">Присоединиться ↗</span>
+      </a>
+
+      <!-- TikTok Card -->
+      <a class="social-card" href="https://www.tiktok.com/<@&1554905728987439185>_top1?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">
+        <div>
+          <div class="social-card-icon">🎬</div>
+          <h3>TIKTOK</h3>
+          <p>Лучшие моменты матчей, эдиты, смешные фрагменты с праков и уникальный контент.</p>
+        </div>
+        <span class="social-link">Смотреть ролики ↗</span>
+      </a>
+
+      <!-- Telegram Card -->
+      <a class="social-card" href="https://t.me/yumz007" target="_blank" rel="noopener">
+        <div>
+          <div class="social-card-icon">✈️</div>
+          <h3>TELEGRAM</h3>
+          <p>Официальные анонсы состава, новости, инсайды и наборы в BICEPS ESPORTS.</p>
+        </div>
+        <span class="social-link">Подписаться ↗</span>
+      </a>
+    </div>
+  </section>
+
   <div class="join" id="join">
     <div class="kicker">Набор открыт</div>
     <h2>ГОТОВ НОСИТЬ НАШ ТЕГ?</h2>
@@ -578,6 +680,7 @@ footer a{color:#aaa;transition:color .2s}footer a:hover{color:var(--red)}
   <div class="footer-links">
     <a href="https://t.me/yumz007" target="_blank" rel="noopener">Telegram ↗</a>
     <a href="https://discord.gg/rrENKMSQm" target="_blank" rel="noopener">Discord ↗</a>
+    <a href="https://www.tiktok.com/<@&1554905728987439185>_top1?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok ↗</a>
   </div>
 </footer>
 
