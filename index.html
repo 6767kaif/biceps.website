@@ -30,6 +30,101 @@ body:before{
 
 a{color:inherit;text-decoration:none}
 
+/* ENTRANCE MENU OVERLAY */
+.entrance-overlay {
+  position: fixed;
+  inset: 0;
+  background: #080808;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+}
+
+.entrance-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.entrance-emblem {
+  width: 140px;
+  height: 140px;
+  border: 1px solid var(--red);
+  transform: rotate(45deg);
+  display: grid;
+  place-items: center;
+  margin-bottom: 50px;
+  box-shadow: 0 0 60px var(--red-glow), inset 0 0 40px var(--red-glow);
+  animation: emblemPulse 3s infinite ease-in-out;
+}
+
+.entrance-emblem-inner {
+  transform: rotate(-45deg);
+}
+
+.entrance-emblem-inner strong {
+  font-size: 54px;
+  font-weight: 1000;
+  color: var(--white);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes emblemPulse {
+  0%, 100% { box-shadow: 0 0 40px var(--red-glow), inset 0 0 25px var(--red-glow); }
+  50% { box-shadow: 0 0 80px rgba(255, 30, 39, 0.45), inset 0 0 50px rgba(255, 30, 39, 0.35); }
+}
+
+.entrance-title {
+  font-size: clamp(32px, 6vw, 64px);
+  font-weight: 1000;
+  letter-spacing: 6px;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.entrance-title span {
+  color: var(--red);
+  text-shadow: 0 0 30px rgba(255, 30, 39, 0.4);
+}
+
+.entrance-sub {
+  color: #888;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  font-weight: 800;
+}
+
+.entrance-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--red);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 1000;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 20px 45px;
+  border: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 88% 100%, 0 100%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 25px var(--red-glow);
+}
+
+.entrance-btn:hover {
+  background: var(--red-hover);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 0 40px rgba(255, 30, 39, 0.6);
+}
+
 nav{height:78px;display:flex;align-items:center;justify-content:space-between;max-width:1160px;margin:auto;padding:0 28px;border-bottom:1px solid #1a1a1a}
 .brand{font-weight:1000;letter-spacing:4px;font-size:24px;display:flex;align-items:center;gap:2px}
 .brand span{color:var(--red)}
@@ -256,6 +351,18 @@ footer a{color:#aaa;transition:color .2s}footer a:hover{color:var(--red)}
 </head>
 <body>
 
+<!-- ENTRANCE MENU OVERLAY -->
+<div class="entrance-overlay" id="entranceOverlay">
+  <div class="entrance-emblem">
+    <div class="entrance-emblem-inner">
+      <strong>B.</strong>
+    </div>
+  </div>
+  <h1 class="entrance-title">BICEPS <span>ESPORTS</span></h1>
+  <div class="entrance-sub">СОЗДАНЫ ПОБЕЖДАТЬ</div>
+  <button class="entrance-btn" onclick="enterSite()">ВХОДИТЬ ↗</button>
+</div>
+
 <nav>
   <a class="brand" href="#">BI<span>CEPS</span></a>
   <div class="navlinks">
@@ -463,6 +570,11 @@ footer a{color:#aaa;transition:color .2s}footer a:hover{color:var(--red)}
 </footer>
 
 <script>
+// Функция входа на сайт
+function enterSite() {
+  document.getElementById('entranceOverlay').classList.add('hidden');
+}
+
 // Данные игроков для выезжающей боковой панели
 const playersData = {
   hahako: {
