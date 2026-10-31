@@ -193,6 +193,67 @@ section{max-width:1104px;margin:auto;padding:105px 28px}
 h2{font-size:clamp(38px,6vw,64px);letter-spacing:-3px;margin:12px 0 0;text-transform:uppercase;font-weight:900}
 .section-top p{color:#888;font-size:13px;max-width:330px;line-height:1.7}
 
+/* NEWS SECTION STYLES */
+.news-card {
+  background: linear-gradient(145deg, #141414, #0a0a0a);
+  border: 1px solid #262626;
+  border-left: 4px solid var(--red);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  margin-top: 25px;
+}
+.news-media {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 280px;
+}
+.news-video {
+  width: 100%;
+  height: 100%;
+  max-height: 380px;
+  object-fit: cover;
+  display: block;
+}
+.news-content {
+  padding: 35px 35px 35px 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.news-tag {
+  display: inline-block;
+  background: rgba(255, 30, 39, 0.15);
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 30, 39, 0.3);
+  margin-bottom: 15px;
+  width: fit-content;
+}
+.news-title {
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 1000;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  margin: 0 0 15px;
+  color: var(--white);
+}
+.news-desc {
+  font-size: 14px;
+  line-height: 1.85;
+  color: #bbb;
+  margin: 0 0 25px;
+}
+
 /* ROSTER / СОСТАВ */
 .roster-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:20px;margin-top:20px}
 .player-card{
@@ -454,6 +515,8 @@ footer a{color:#aaa;transition:color .2s}footer a:hover{color:var(--red)}
 @media(max-width:850px){
   .roster-grid{grid-template-columns:repeat(2, 1fr)}
   .social-grid{grid-template-columns:1fr}
+  .news-card{grid-template-columns:1fr;}
+  .news-content{padding:25px;}
 }
 
 @media(max-width:760px){
@@ -491,11 +554,11 @@ footer a{color:#aaa;transition:color .2s}footer a:hover{color:var(--red)}
 <nav>
   <a class="brand" href="#">BI<span>CEPS</span></a>
   <div class="navlinks">
-    <a href="#about">О команде</a>
+    <a href="#news">Новости</a>
     <a href="#roster">Состав</a>
     <a href="#socials">Соцсети</a>
     <a href="#faq">FAQ</a>
-    <a href="#values">Принципы</a>
+    <a href="#about">О команде</a>
     <a href="#join">Вступление</a>
   </div>
   <div class="nav-actions">
@@ -526,6 +589,40 @@ footer a{color:#aaa;transition:color .2s}footer a:hover{color:var(--red)}
     <div class="stat"><b>100%</b><span>БОЕВОЙ НАСТРОЙ</span></div>
     <div class="stat"><b>∞</b><span>РОСТ БЕЗ ГРАНИЦ</span></div>
   </div>
+
+  <!-- РАЗДЕЛ HОВОСТИ / MATCHES -->
+  <section id="news" style="padding-top:80px;">
+    <div class="section-top">
+      <div>
+        <div class="kicker">Анонсы и события</div>
+        <h2>ПОСЛЕДНИЕ НОВОСТИ</h2>
+      </div>
+      <p>Следите за важнейшими противостояниями и новостями нашей организации.</p>
+    </div>
+
+    <div class="news-card">
+      <div class="news-media">
+        <video class="news-video" autoplay loop muted playsinline>
+          <source src="match-fez.mp4" type="video/mp4">
+          Ваш браузер не поддерживает видео.
+        </video>
+      </div>
+      <div class="news-content">
+        <span class="news-tag">⚔️ АНОНС МАТЧА • 3 НОЯБРЯ</span>
+        <h3 class="news-title">BICEPS vs FEZ TEAM</h3>
+        <p class="news-desc">
+          Первое официальное испытание для обновлённого состава BICEPS! Уже <strong>3 ноября</strong> наша команда сойдётся в напряжённой дуэли против <strong>FEZ TEAM</strong>. 
+          Каждый раунд будет решающим, а хладнокровие и командная сыгранность определят победителя. 
+          Мы выходим на сервер с единственной целью — продемонстрировать свой максимум и забрать эту победу! 
+          Поддержите состав в нашем Discord и Telegram!
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="cta" href="https://discord.gg/rrENKMSQm" target="_blank" rel="noopener" style="padding:12px 20px; font-size:11px;">Смотреть в Discord ↗</a>
+          <a class="btn-secondary" href="https://t.me/yumz007" target="_blank" rel="noopener" style="padding:11px 18px; font-size:11px;">Поддержать в TG ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="about">
     <div class="section-top">
