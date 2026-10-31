@@ -16,6 +16,7 @@
   --red: #ff1e27;
   --red-hover: #ff4148;
   --red-glow: rgba(255, 30, 39, 0.25);
+  --red-text-glow: 0 0 10px rgba(255, 30, 39, 0.6), 0 0 20px rgba(255, 30, 39, 0.3);
 }
 
 *{box-sizing:border-box}
@@ -210,6 +211,10 @@ h2{font-size:clamp(38px,6vw,64px);letter-spacing:-3px;margin:12px 0 0;text-trans
   transform:translateY(-5px);
   box-shadow:0 10px 30px rgba(255, 30, 39, 0.15);
 }
+.player-card:hover .player-name{
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(255, 30, 39, 0.9), 0 0 22px rgba(255, 30, 39, 0.6);
+}
 .player-card:hover .player-img{
   transform:scale(1.05);
 }
@@ -250,12 +255,16 @@ h2{font-size:clamp(38px,6vw,64px);letter-spacing:-3px;margin:12px 0 0;text-trans
   justify-content:space-between;
   background:#0e0e0e;
 }
+
+/* GLOW EFFECT ON NICKNAMES */
 .player-name{
   font-size:20px;
   font-weight:900;
   letter-spacing:-0.5px;
   color:var(--white);
   text-transform:uppercase;
+  transition:all .3s ease;
+  text-shadow: 0 0 8px rgba(255, 30, 39, 0.4);
 }
 .player-flag{
   font-size:20px;
@@ -282,7 +291,10 @@ h2{font-size:clamp(38px,6vw,64px);letter-spacing:-3px;margin:12px 0 0;text-trans
   padding:28px 32px;display:flex;align-items:center;justify-content:space-between;
   border-bottom:1px solid #222;background:#141414;position:sticky;top:0;z-index:10;
 }
-.drawer-title{font-size:26px;font-weight:1000;text-transform:uppercase;letter-spacing:1px;margin:0;color:var(--white);}
+.drawer-title{
+  font-size:26px;font-weight:1000;text-transform:uppercase;letter-spacing:1px;margin:0;color:var(--white);
+  text-shadow: 0 0 12px rgba(255, 30, 39, 0.8), 0 0 25px rgba(255, 30, 39, 0.5);
+}
 .drawer-close{
   background:none;border:1px solid #333;color:var(--white);width:42px;height:42px;
   display:grid;place-items:center;font-size:20px;cursor:pointer;transition:all .2s;
