@@ -176,7 +176,7 @@
                     </div>
 
                     <!-- Mobile Navigation Toggle Button -->
-                    <div class="md:hidden flex items-center space-x-2">
+                    <div class="md:hidden flex items-center">
                         <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-gray-400 hover:text-white focus:outline-none p-2 rounded-lg bg-brand-card border border-brand-border">
                             <i class="fa-solid fa-bars text-xl"></i>
                         </button>
@@ -279,6 +279,64 @@
                         <div>
                             <h4 class="text-gray-400 text-sm font-medium">Попаданий в голову</h4>
                             <p class="text-3xl font-bold text-white heading-font" id="total-hs-overview">198</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="pt-8 space-y-6">
+                    <div class="border-b border-brand-border pb-4">
+                        <h2 class="text-3xl font-bold text-white heading-font uppercase">Часто задаваемые вопросы <span class="text-brand-red">(FAQ)</span></h2>
+                        <p class="text-gray-400 text-sm mt-1">Ответы на популярные вопросы о нашей организации и вступлении в команду</p>
+                    </div>
+
+                    <div class="space-y-4 max-w-4xl">
+                        <!-- FAQ Item 1 -->
+                        <div class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden transition-all">
+                            <button onclick="toggleFaq('faq-1')" class="w-full text-left p-6 font-bold text-white heading-font text-lg flex justify-between items-center hover:text-brand-red transition-colors focus:outline-none">
+                                <span><i class="fa-solid fa-circle-question text-brand-red mr-3"></i>Как попасть в состав BICEPS Esports?</span>
+                                <i id="faq-1-icon" class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                            </button>
+                            <div id="faq-1" class="hidden px-6 pb-6 text-gray-300 text-sm leading-relaxed border-t border-brand-border/40 pt-4 space-y-3">
+                                <p>Мы регулярно проводим просмотры и наборы игроков. Чтобы подать заявку или пройти тест-матчи, присылайте свое портфолио и статистику в наш официальный Discord-сервер в раздел <span class="text-white font-semibold">#recruitment</span>.</p>
+                                <div>
+                                    <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 rounded-xl bg border border-brand-red/40 bg-brand-red/10 text-brand-red hover:bg-brand-red hover:text-white font-semibold text-xs transition-all">
+                                        <i class="fa-brands fa-discord text-base mr-2"></i> Перейти в Discord для заявки
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 2 -->
+                        <div class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden transition-all">
+                            <button onclick="toggleFaq('faq-2')" class="w-full text-left p-6 font-bold text-white heading-font text-lg flex justify-between items-center hover:text-brand-red transition-colors focus:outline-none">
+                                <span><i class="fa-solid fa-headset text-brand-red mr-3"></i>Где проходят трансляции и общение с фанатами?</span>
+                                <i id="faq-2-icon" class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                            </button>
+                            <div id="faq-2" class="hidden px-6 pb-6 text-gray-300 text-sm leading-relaxed border-t border-brand-border/40 pt-4 space-y-3">
+                                <p>Основная комьюнити-жизнь, анонсы пракков, совместные игры с фанатами и голосовые каналы во время турниров находятся на нашем сервере Discord.</p>
+                                <div>
+                                    <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 rounded-xl border border-brand-red/40 bg-brand-red/10 text-brand-red hover:bg-brand-red hover:text-white font-semibold text-xs transition-all">
+                                        <i class="fa-brands fa-discord text-base mr-2"></i> Присоединиться к сообществу
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 3 -->
+                        <div class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden transition-all">
+                            <button onclick="toggleFaq('faq-3')" class="w-full text-left p-6 font-bold text-white heading-font text-lg flex justify-between items-center hover:text-brand-red transition-colors focus:outline-none">
+                                <span><i class="fa-solid fa-handshake text-brand-red mr-3"></i>Вопросы сотрудничества и пракков (CW)</span>
+                                <i id="faq-3-icon" class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                            </button>
+                            <div id="faq-3" class="hidden px-6 pb-6 text-gray-300 text-sm leading-relaxed border-t border-brand-border/40 pt-4 space-y-3">
+                                <p>Для организации пракков (Clan Wars) или спонсорских предложений обращайтесь к менеджменту команды в Discord через тикет-систему.</p>
+                                <div>
+                                    <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 rounded-xl border border-brand-red/40 bg-brand-red/10 text-brand-red hover:bg-brand-red hover:text-white font-semibold text-xs transition-all">
+                                        <i class="fa-brands fa-discord text-base mr-2"></i> Написать менеджеру в Discord
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -457,6 +515,16 @@
 
     <!-- JavaScript Application Logic -->
     <script>
+        // Smooth Entrance Transition
+        function enterApp() {
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const mainApp = document.getElementById('main-app');
+            if (welcomeScreen) welcomeScreen.classList.add('hidden-welcome');
+            setTimeout(() => {
+                if (mainApp) mainApp.classList.add('visible-app');
+            }, 100);
+        }
+
         // Player Data Source
         const playersData = [
             { 
@@ -751,6 +819,21 @@
         function closeModal() {
             const modal = document.getElementById('player-modal');
             if (modal) modal.classList.add('hidden');
+        }
+
+        // FAQ Toggle Functionality
+        function toggleFaq(faqId) {
+            const content = document.getElementById(faqId);
+            const icon = document.getElementById(`${faqId}-icon`);
+            if (!content) return;
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                if (icon) icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                if (icon) icon.classList.remove('rotate-180');
+            }
         }
 
         // Initialize App on Window Load
