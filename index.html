@@ -159,6 +159,9 @@
                             <button id="tab-btn-stats" onclick="switchTab('stats')" class="nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-gray-400 hover:text-white hover:bg-brand-border/50">
                                 <i class="fa-solid fa-chart-line mr-2"></i>Статистика
                             </button>
+                            <button id="tab-btn-news" onclick="switchTab('news')" class="nav-btn px-6 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 text-gray-400 hover:text-white hover:bg-brand-border/50">
+                                <i class="fa-solid fa-newspaper mr-2"></i>Новости
+                            </button>
                         </nav>
 
                         <!-- Header Socials -->
@@ -194,6 +197,9 @@
                 </button>
                 <button onclick="switchTab('stats'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-brand-border flex items-center">
                     <i class="fa-solid fa-chart-line w-6 text-brand-red"></i>Статистика
+                </button>
+                <button onclick="switchTab('news'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-brand-border flex items-center">
+                    <i class="fa-solid fa-newspaper w-6 text-brand-red"></i>Новости
                 </button>
                 
                 <!-- Mobile Social Links -->
@@ -454,6 +460,84 @@
                         <!-- Injected via JS -->
                     </div>
                 </div>
+            </section>
+
+            <!-- TAB 4: NEWS -->
+            <section id="tab-news" class="tab-content space-y-8">
+                <div class="border-b border-brand-border pb-6">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white heading-font uppercase">Новости <span class="text-brand-red">BICEPS</span></h2>
+                    <p class="text-gray-400 text-sm mt-1">Последние события, матчи и важные моменты из истории организации</p>
+                </div>
+
+                <article class="overflow-hidden rounded-3xl border border-brand-red/40 bg-brand-card red-glow">
+                    <div class="relative min-h-[220px] md:min-h-[280px] overflow-hidden bg-gradient-to-br from-brand-black via-red-950/50 to-brand-card p-7 md:p-10 flex flex-col justify-between">
+                        <div class="absolute -right-12 -top-20 h-80 w-80 rounded-full border-[35px] border-brand-red/10"></div>
+                        <div class="absolute right-10 bottom-0 text-[150px] md:text-[210px] font-bold heading-font text-white/[0.035] leading-none select-none">B</div>
+                        <div class="relative z-10 flex items-center justify-between gap-3">
+                            <span class="inline-flex items-center gap-2 rounded-full border border-brand-red/40 bg-brand-red/15 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-red-300">
+                                <i class="fa-solid fa-bolt"></i> История организации
+                            </span>
+                            <span class="text-xs uppercase tracking-wider text-gray-400">Первый матч</span>
+                        </div>
+                        <div class="relative z-10 mt-10">
+                            <p class="text-sm font-bold uppercase tracking-[0.25em] text-brand-red">BICEPS ESPORTS</p>
+                            <h3 class="mt-2 max-w-3xl text-4xl md:text-6xl font-bold uppercase leading-none heading-font text-white">Новая глава начинается</h3>
+                            <p class="mt-3 text-lg md:text-xl font-semibold text-gray-300">BICEPS Esports vs FEZ TEAM</p>
+                        </div>
+                    </div>
+                    <div class="p-6 md:p-9 space-y-6">
+                        <div class="flex flex-wrap items-center gap-3 text-xs text-gray-500">
+                            <span><i class="fa-solid fa-newspaper mr-2 text-brand-red"></i>Официальная новость</span>
+                            <span class="text-brand-border">|</span>
+                            <span><i class="fa-solid fa-flag-checkered mr-2 text-brand-red"></i>Дебютный матч в истории BICEPS</span>
+                        </div>
+                        <div class="space-y-4 max-w-4xl">
+                            <p class="text-xl md:text-2xl font-bold text-white heading-font">Первый матч. Первая проверка. Начало истории.</p>
+                            <p class="text-sm md:text-base leading-relaxed text-gray-300">
+                                Для BICEPS Esports это особенный момент — первый матч в истории организации. Нашим первым соперником станет FEZ TEAM. Это начало нового этапа для команды, возможность показать сыгранность, характер и командный дух.
+                            </p>
+                            <p class="text-sm md:text-base leading-relaxed text-gray-300">
+                                На сервер выйдет стартовая пятёрка BICEPS: игроки готовы представить организацию и написать первую страницу её соревновательной истории. Независимо от результата, этот матч станет важной точкой отсчёта для дальнейшего развития команды.
+                            </p>
+                        </div>
+
+                        <div class="rounded-2xl border border-brand-border bg-brand-black/60 p-5 md:p-6">
+                            <div class="flex items-center justify-between gap-3 mb-4">
+                                <h4 class="text-lg font-bold uppercase heading-font text-white"><i class="fa-solid fa-users text-brand-red mr-2"></i>Стартовый состав</h4>
+                                <span class="text-xs text-gray-500">BICEPS ESPORTS</span>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                                <div class="rounded-xl border border-brand-border bg-brand-card p-3 text-center">
+                                    <div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-red/15 text-sm font-bold text-brand-red">HA</div>
+                                    <span class="text-sm font-bold text-white">hahako</span>
+                                </div>
+                                <div class="rounded-xl border border-brand-border bg-brand-card p-3 text-center">
+                                    <div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-red/15 text-sm font-bold text-brand-red">FA</div>
+                                    <span class="text-sm font-bold text-white">farv1x</span>
+                                </div>
+                                <div class="rounded-xl border border-brand-border bg-brand-card p-3 text-center">
+                                    <div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-red/15 text-sm font-bold text-brand-red">NV</div>
+                                    <span class="text-sm font-bold text-white">nvrd</span>
+                                </div>
+                                <div class="rounded-xl border border-brand-border bg-brand-card p-3 text-center">
+                                    <div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-red/15 text-sm font-bold text-brand-red">VA</div>
+                                    <span class="text-sm font-bold text-white">valunsakar</span>
+                                </div>
+                                <div class="rounded-xl border border-brand-border bg-brand-card p-3 text-center">
+                                    <div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-red/15 text-sm font-bold text-brand-red">CE</div>
+                                    <span class="text-sm font-bold text-white">CEMEH</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-4 border-t border-brand-border pt-5">
+                            <p class="text-xs text-gray-500">Соперник: <span class="font-semibold text-gray-300">FEZ TEAM</span></p>
+                            <span class="inline-flex items-center gap-2 rounded-lg bg-brand-red/10 px-4 py-2 text-sm font-bold text-brand-red">
+                                <i class="fa-solid fa-fire"></i> Первая страница истории
+                            </span>
+                        </div>
+                    </div>
+                </article>
             </section>
 
         </main>
